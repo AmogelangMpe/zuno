@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-dm-sans: 'DM Sans', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+/* Hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+@layer components {
+  .btn-primary {
+    @apply bg-zuno-text text-zuno-bg rounded-xl px-5 py-3 text-sm font-medium
+           transition-all hover:opacity-85 active:scale-95 disabled:opacity-40
+           disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-zuno-card text-zuno-text rounded-xl px-5 py-3 text-sm font-medium
+           border border-zuno-border transition-all hover:bg-zuno-hover
+           active:scale-95 disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply text-zuno-muted rounded-xl px-4 py-2 text-sm
+           transition-colors hover:text-zuno-text hover:bg-zuno-card;
+  }
+
+  .input {
+    @apply w-full bg-zuno-card border border-zuno-border rounded-xl px-4 py-3
+           text-sm text-zuno-text placeholder:text-zuno-muted
+           focus:outline-none focus:ring-2 focus:ring-zuno-accent
+           transition-all;
+  }
+
+  .card {
+    @apply bg-zuno-surface border border-zuno-border rounded-2xl
+           shadow-sm overflow-hidden;
+  }
+
+  .section-title {
+    @apply font-serif italic text-2xl font-normal mb-3;
+  }
+
+  .section-subtitle {
+    @apply text-xs text-zuno-muted uppercase tracking-wider font-medium
+           mb-3 mt-6;
+  }
+}

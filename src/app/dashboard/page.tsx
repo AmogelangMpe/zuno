@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import LogoutButton from '@/components/auth/LogoutButton'
 
 export default async function DashboardPage() {
   const supabase = createClient()
@@ -74,6 +75,7 @@ export default async function DashboardPage() {
           <Link href="/edit" className="btn-primary text-sm py-2">
             Edit page
           </Link>
+          <LogoutButton />
         </div>
       </nav>
 

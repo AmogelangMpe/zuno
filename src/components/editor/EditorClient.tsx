@@ -11,6 +11,7 @@ import SocialsEditor from './SocialsEditor'
 import ThemeEditor from './ThemeEditor'
 import CollabsEditor from './CollabsEditor'
 import ProfilePreview from '../profile/ProfilePreview'
+import LogoutButton from '@/components/auth/LogoutButton'
 
 type Tab = 'profile' | 'socials' | 'sections' | 'collabs' | 'theme'
 
@@ -79,6 +80,7 @@ export default function EditorClient({ profile: initialProfile, socialLinks: ini
           >
             View live ↗
           </a>
+          <LogoutButton className="btn-secondary text-xs py-1.5" />
           {saving && <span className="text-xs text-zuno-muted">Saving…</span>}
         </div>
       </nav>

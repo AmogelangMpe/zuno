@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import AffiliateManager from '@/components/affiliate/AffiliateManager'
@@ -28,6 +29,12 @@ export default async function AffiliatePage() {
   }, {})
 
   const totalClicks = (links || []).reduce((s, l) => s + l.total_clicks, 0)
+  const requestHeaders = headers()
+  const host = requestHeaders.get('x-forwarded-host') || requestHeaders.get('host')
+  const proto = requestHeaders.get('x-forwarded-proto') || (host?.includes('localhost') ? 'http' : 'https')
+  const requestOrigin = host ? `${proto}://${host}` : null
+  const envAppUrl = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '')
+  const appUrl = requestOrigin || envAppUrl || 'https://zunobio.com'
 
   return (
     <main className="min-h-screen bg-zuno-bg">
@@ -59,7 +66,7 @@ export default async function AffiliatePage() {
           profileId={user.id}
           links={links || []}
           clicksByLink={clicksByLink}
-          appUrl={process.env.NEXT_PUBLIC_APP_URL || 'https://zunobio.com'}
+          appUrl={appUrl}
         />
       </div>
     </main>

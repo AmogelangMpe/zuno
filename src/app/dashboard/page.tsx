@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import LogoutButton from '@/components/auth/LogoutButton'
@@ -56,8 +57,15 @@ export default async function DashboardPage() {
     .eq('event_type', 'page_view')
     .gte('created_at', today)
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
-  const profileUrl = `${appUrl}/${finalProfile?.username || user.email?.split('@')[0]}`
+  const username = finalProfile?.username || user.email?.split('@')[0]
+  const requestHeaders = headers()
+  const host = requestHeaders.get('x-forwarded-host') || requestHeaders.get('host')
+  const proto = requestHeaders.get('x-forwarded-proto') || (host?.includes('localhost') ? 'http' : 'https')
+  const requestOrigin = host ? `${proto}://${host}` : null
+  const envAppUrl = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '')
+  const appUrl = requestOrigin || envAppUrl || 'https://zunobio.com'
+  const profileUrl = `${appUrl}/${username}`
+  const profileUrlDisplay = profileUrl.replace(/^https?:\/\//, '')
 
   return (
     <main className="min-h-screen bg-zuno-bg">
@@ -86,7 +94,7 @@ export default async function DashboardPage() {
         <p className="text-sm text-zuno-muted mb-8">
           Your page is live at{' '}
           <a href={profileUrl} target="_blank" className="underline underline-offset-2 text-zuno-text">
-            {profileUrl.replace('http://localhost:3000', 'zunobio.com')}
+            {profileUrlDisplay}
           </a>
         </p>
 
@@ -109,7 +117,7 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-2 gap-4">
           {[
             { label: 'Edit your page',     href: '/edit',              desc: 'Update content, links, photos' },
-            { label: 'Share your link',    href: profileUrl,           desc: profileUrl.replace('http://localhost:3000', 'zunobio.com'), external: true },
+            { label: 'Share your link',    href: profileUrl,           desc: profileUrlDisplay, external: true },
             { label: 'Change your theme',  href: '/edit?tab=theme',    desc: 'Colours, fonts, style' },
             { label: 'Account settings',   href: '/dashboard/settings',desc: 'Email, password, username' },
           ].map(a => (

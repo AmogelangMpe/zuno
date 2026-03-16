@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 import { NextResponse, type NextRequest } from 'next/server'
 import { v4 as uuidv4 } from 'uuid'
 
-  function getSupabase() {
+function getSupabase() {
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -16,17 +16,12 @@ type VideoItem = {
   platform:  'youtube' | 'tiktok'
 }
 
-// ── YouTube ───────────────────────────────────────────────────────────────────
-
 async function resolveYouTubeChannelId(channelUrl: string): Promise<string | null> {
   try {
     const u = new URL(channelUrl)
-
-    // Already a channel ID e.g. /channel/UCxxx
     const idMatch = u.pathname.match(/^\/channel\/(UC[^/]+)/)
     if (idMatch) return idMatch[1]
 
-    // For @handles and /user/ — fetch the page and extract channelId
     const page = await fetch(channelUrl, {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ZunoBio/1.0)' },
       signal: AbortSignal.timeout(8000),
@@ -53,17 +48,11 @@ async function resolveYouTubeChannelId(channelUrl: string): Promise<string | nul
 async function fetchYouTubeFeed(channelUrl: string): Promise<VideoItem[]> {
   try {
     const channelId = await resolveYouTubeChannelId(channelUrl)
-    if (!channelId) {
-      console.error('Could not resolve YouTube channel ID for:', channelUrl)
-      return []
-    }
+    if (!channelId) return []
 
     const feedUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
     const res = await fetch(feedUrl, { signal: AbortSignal.timeout(8000) })
-    if (!res.ok) {
-      console.error('YouTube RSS fetch failed:', res.status)
-      return []
-    }
+    if (!res.ok) return []
 
     const xml = await res.text()
     const entries = xml.match(/<entry>([\s\S]*?)<\/entry>/g) || []
@@ -84,8 +73,6 @@ async function fetchYouTubeFeed(channelUrl: string): Promise<VideoItem[]> {
   }
 }
 
-// ── TikTok ────────────────────────────────────────────────────────────────────
-
 const findItemList = (obj: any): any[] | null => {
   if (!obj || typeof obj !== 'object') return null
   if (Array.isArray(obj.itemList) && obj.itemList.length > 0) return obj.itemList
@@ -104,32 +91,22 @@ async function fetchTikTokFeed(channelUrl: string): Promise<VideoItem[]> {
 
     const res = await fetch(`https://www.tiktok.com/@${username}`, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         'Accept': 'text/html,application/xhtml+xml',
         'Accept-Language': 'en-US,en;q=0.9',
       },
       signal: AbortSignal.timeout(10000),
     })
 
-    if (!res.ok) {
-      console.error('TikTok page fetch failed:', res.status)
-      return []
-    }
+    if (!res.ok) return []
 
     const html = await res.text()
     const scriptMatch = html.match(/<script id="__UNIVERSAL_DATA_FOR_REHYDRATION__"[^>]*>([\s\S]*?)<\/script>/)
-    if (!scriptMatch) {
-      console.error('TikTok: could not find data script tag')
-      return []
-    }
+    if (!scriptMatch) return []
 
     const data = JSON.parse(scriptMatch[1])
-
     const items = findItemList(data)
-    if (!items) {
-      console.error('TikTok: could not find itemList in data')
-      return []
-    }
+    if (!items) return []
 
     return items.slice(0, 10).map((item: any) => ({
       title:     item.desc || 'TikTok video',
@@ -142,8 +119,6 @@ async function fetchTikTokFeed(channelUrl: string): Promise<VideoItem[]> {
     return []
   }
 }
-
-// ── Core sync ─────────────────────────────────────────────────────────────────
 
 async function syncSection(section: any): Promise<{ synced: number; error?: string }> {
   const supabase = getSupabase()
@@ -199,10 +174,7 @@ async function syncSection(section: any): Promise<{ synced: number; error?: stri
     }))
 
     const { error: insertError } = await supabase.from('links').insert(toInsert)
-    if (insertError) {
-      console.error('Insert error:', insertError)
-      return { synced: 0, error: insertError.message }
-    }
+    if (insertError) return { synced: 0, error: insertError.message }
 
     await supabase
       .from('sections')
@@ -215,8 +187,6 @@ async function syncSection(section: any): Promise<{ synced: number; error?: stri
     return { synced: 0, error: e.message }
   }
 }
-
-// ── GET — cron job ────────────────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
   const supabase = getSupabase()
@@ -255,8 +225,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: e.message || 'Unknown error' }, { status: 500 })
   }
 }
-
-// ── POST — manual sync from editor ───────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
   const supabase = getSupabase()

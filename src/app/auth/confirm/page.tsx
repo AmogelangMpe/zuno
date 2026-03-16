@@ -50,7 +50,7 @@ export default function ConfirmPage() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 bg-zuno-bg text-center">
-      <Link href="/" className="font-serif italic text-3xl mb-10">Zuno</Link>
+      <Link href="/" className="font-serif italic text-3xl mb-10">ZunoBio</Link>
       <div className="w-full max-w-sm">
         <h1 className="text-xl font-medium mb-2">Check your email</h1>
         <p className="text-sm text-zuno-muted mb-8 leading-relaxed">

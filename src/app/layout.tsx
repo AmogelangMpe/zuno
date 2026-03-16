@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: 'Zuno — Your Personal Link Page',
+  title: 'ZunoBio — Your Personal Link Page',
   description: 'Create your beautiful personal link page in minutes.',
   manifest: '/manifest.json',
 }

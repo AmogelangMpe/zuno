@@ -1,5 +1,5 @@
 -- ============================================================
--- Zuno — SQL Helper Functions
+-- ZunoBio — SQL Helper Functions
 -- Run in Supabase SQL Editor after schema-extended.sql
 -- ============================================================
 

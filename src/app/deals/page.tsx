@@ -23,7 +23,7 @@ export default async function DealsPage() {
   return (
     <main className="min-h-screen bg-zuno-bg">
       <nav className="flex items-center justify-between px-6 py-4 border-b border-zuno-border bg-zuno-surface">
-        <Link href="/dashboard" className="font-serif italic text-xl">Zuno</Link>
+        <Link href="/dashboard" className="font-serif italic text-xl">ZunoBio</Link>
         <Link href="/marketplace" className="btn-secondary text-sm">Browse deals</Link>
       </nav>
 

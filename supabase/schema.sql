@@ -1,5 +1,5 @@
 -- ============================================================
--- Zuno — Supabase Database Schema
+-- ZunoBio — Supabase Database Schema
 -- Run this in your Supabase SQL editor (supabase.com > SQL Editor)
 -- ============================================================
 
@@ -9,7 +9,7 @@ create extension if not exists "uuid-ossp";
 
 
 -- ── PROFILES ──
--- One profile per user. Username becomes their public URL: zuno.app/username
+-- One profile per user. Username becomes their public URL: zunobio.com/username
 create table public.profiles (
   id              uuid references auth.users(id) on delete cascade primary key,
   username        text unique not null,

@@ -272,7 +272,7 @@ export default function ProfileEditor({ profile, onSave }: Props) {
         <label className="text-sm text-zuno-muted mb-2 block">Username</label>
         <div className="relative">
           <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-zuno-muted">
-            zuno.app/
+            zunobio.com/
           </span>
           <input
             className="input pl-[4.5rem]"

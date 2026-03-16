@@ -26,7 +26,7 @@ async function resolveYouTubeChannelId(channelUrl: string): Promise<string | nul
 
     // For @handles and /user/ — fetch the page and extract channelId
     const page = await fetch(channelUrl, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; Zuno/1.0)' },
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ZunoBio/1.0)' },
       signal: AbortSignal.timeout(8000),
     })
     if (!page.ok) return null

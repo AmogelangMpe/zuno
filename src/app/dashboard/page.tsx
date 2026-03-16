@@ -62,7 +62,7 @@ export default async function DashboardPage() {
     <main className="min-h-screen bg-zuno-bg">
       {/* Top bar */}
       <nav className="flex items-center justify-between px-6 py-4 border-b border-zuno-border bg-zuno-surface">
-        <span className="font-serif italic text-xl">Zuno</span>
+        <span className="font-serif italic text-xl">ZunoBio</span>
         <div className="flex items-center gap-3">
           <a
             href={profileUrl}
@@ -84,7 +84,7 @@ export default async function DashboardPage() {
         <p className="text-sm text-zuno-muted mb-8">
           Your page is live at{' '}
           <a href={profileUrl} target="_blank" className="underline underline-offset-2 text-zuno-text">
-            {profileUrl.replace('http://localhost:3000', 'zuno.app')}
+            {profileUrl.replace('http://localhost:3000', 'zunobio.com')}
           </a>
         </p>
 
@@ -107,7 +107,7 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-2 gap-4">
           {[
             { label: 'Edit your page',     href: '/edit',              desc: 'Update content, links, photos' },
-            { label: 'Share your link',    href: profileUrl,           desc: profileUrl.replace('http://localhost:3000', 'zuno.app'), external: true },
+            { label: 'Share your link',    href: profileUrl,           desc: profileUrl.replace('http://localhost:3000', 'zunobio.com'), external: true },
             { label: 'Change your theme',  href: '/edit?tab=theme',    desc: 'Colours, fonts, style' },
             { label: 'Account settings',   href: '/dashboard/settings',desc: 'Email, password, username' },
           ].map(a => (

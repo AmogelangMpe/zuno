@@ -32,7 +32,7 @@ export default async function AffiliatePage() {
   return (
     <main className="min-h-screen bg-zuno-bg">
       <nav className="flex items-center justify-between px-6 py-4 border-b border-zuno-border bg-zuno-surface">
-        <Link href="/dashboard" className="font-serif italic text-xl">Zuno</Link>
+        <Link href="/dashboard" className="font-serif italic text-xl">ZunoBio</Link>
         <Link href="/dashboard" className="btn-ghost text-sm">← Dashboard</Link>
       </nav>
 
@@ -40,7 +40,7 @@ export default async function AffiliatePage() {
         <h1 className="font-serif italic text-3xl mb-2">Affiliate Storefront</h1>
         <p className="text-sm text-zuno-muted mb-8">
           Add your affiliate links. Each gets a short tracked URL at{' '}
-          <span className="text-zuno-text">zuno.app/go/your-slug</span>
+          <span className="text-zuno-text">zunobio.com/go/your-slug</span>
         </p>
 
         {/* Stats */}
@@ -59,7 +59,7 @@ export default async function AffiliatePage() {
           profileId={user.id}
           links={links || []}
           clicksByLink={clicksByLink}
-          appUrl={process.env.NEXT_PUBLIC_APP_URL || 'https://zuno.app'}
+          appUrl={process.env.NEXT_PUBLIC_APP_URL || 'https://zunobio.com'}
         />
       </div>
     </main>

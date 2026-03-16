@@ -45,8 +45,8 @@ export default function SignupPage() {
   email,
   password,
   options: {
-    emailRedirectTo: `${window.location.origin}/auth/callback`,
-  },
+  emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+}
 })
 
     if (authError || !authData.user) {
@@ -62,7 +62,7 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 bg-zuno-bg">
-      <Link href="/" className="font-serif italic text-3xl mb-10">Zuno</Link>
+      <Link href="/" className="font-serif italic text-3xl mb-10">ZunoBio</Link>
 
       <div className="w-full max-w-sm">
         <h1 className="text-xl font-medium mb-1">Create your page</h1>
@@ -79,7 +79,7 @@ export default function SignupPage() {
           />
           <div className="relative">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-zuno-muted">
-              zuno.app/
+              zunobio.com/
             </span>
             <input
               className="input pl-[4.5rem]"
@@ -108,7 +108,7 @@ export default function SignupPage() {
             required
           />
           <button className="btn-primary mt-2" type="submit" disabled={loading}>
-            {loading ? 'Creating your page…' : 'Create my Zuno page'}
+            {loading ? 'Creating your page…' : 'Create my ZunoBio page'}
           </button>
         </form>
 

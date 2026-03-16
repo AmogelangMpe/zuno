@@ -1,5 +1,5 @@
 -- ============================================================
--- Zuno — Extended Schema (add to existing schema.sql)
+-- ZunoBio — Extended Schema (add to existing schema.sql)
 -- Run this AFTER the base schema.sql in Supabase SQL Editor
 -- ============================================================
 
@@ -97,7 +97,7 @@ create table public.affiliate_links (
   profile_id   uuid references public.profiles(id) on delete cascade not null,
   title        text not null,
   destination  text not null,          -- the real URL
-  slug         text not null unique,   -- e.g. 'nike-shoes' → zuno.app/go/nike-shoes
+  slug         text not null unique,   -- e.g. 'nike-shoes' → zunobio.com/go/nike-shoes
   commission   text,                   -- display only e.g. '8%'
   network      text,                   -- 'amazon' | 'ltk' | 'custom' etc
   thumbnail    text,

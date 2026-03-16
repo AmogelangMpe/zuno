@@ -1,6 +1,6 @@
 {
-  "name": "Zuno - Link in Bio",
-  "short_name": "Zuno",
+  "name": "ZunoBio - Link in Bio",
+  "short_name": "ZunoBio",
   "description": "Create your link in bio page",
   "start_url": "/",
   "display": "standalone",

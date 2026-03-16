@@ -140,7 +140,7 @@ function AddLinkForm({ onSave, onCancel }: { onSave: (d: any) => void; onCancel:
       <input className="input" placeholder="Title e.g. Nike Running Shoes *" value={title} onChange={e => handleTitleChange(e.target.value)} />
       <input className="input" placeholder="Destination URL (your affiliate link) *" value={destination} onChange={e => setDest(e.target.value)} />
       <div className="relative">
-        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-zuno-muted">zuno.app/go/</span>
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-xs text-zuno-muted">zunobio.com/go/</span>
         <input className="input pl-28 font-mono text-sm" placeholder="your-slug" value={slug} onChange={e => setSlug(slugify(e.target.value))} />
       </div>
       <div className="grid grid-cols-2 gap-3">

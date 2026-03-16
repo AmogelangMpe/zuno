@@ -64,7 +64,7 @@ export default function EditorClient({ profile: initialProfile, socialLinks: ini
     <div className="min-h-screen bg-zuno-bg flex flex-col">
       {/* Top bar */}
       <nav className="flex items-center justify-between px-4 py-3 border-b border-zuno-border bg-zuno-surface sticky top-0 z-20">
-        <Link href="/dashboard" className="font-serif italic text-xl">Zuno</Link>
+        <Link href="/dashboard" className="font-serif italic text-xl">ZunoBio</Link>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowPreview(!showPreview)}

@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   try {
     const res = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; Zuno/1.0; +https://zuno.app)',
+        'User-Agent': 'Mozilla/5.0 (compatible; ZunoBio/1.0; +https://zunobio.com)',
         'Accept': 'text/html',
       },
       signal: AbortSignal.timeout(6000),

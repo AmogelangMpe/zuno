@@ -54,7 +54,7 @@ export default function BrandSignupPage() {
 
   return (
     <main className="min-h-screen bg-zuno-bg flex flex-col items-center justify-center px-6">
-      <Link href="/" className="font-serif italic text-3xl mb-3">Zuno</Link>
+      <Link href="/" className="font-serif italic text-3xl mb-3">ZunoBio</Link>
       <p className="text-sm text-zuno-muted mb-10">for Brands</p>
 
       <div className="w-full max-w-md">

@@ -5,7 +5,7 @@ export default function HomePage() {
     <main className="min-h-screen bg-zuno-bg">
       {/* Header */}
       <nav className="flex items-center justify-between px-6 py-4 border-b border-zuno-border bg-zuno-surface">
-        <span className="font-serif italic text-xl">Zuno</span>
+        <span className="font-serif italic text-xl">ZunoBio</span>
         <div className="flex items-center gap-4">
           <Link href="/auth/login" className="text-zuno-text hover:text-zuno-accent transition-colors">
             Log in
@@ -72,7 +72,7 @@ export default function HomePage() {
       <footer className="border-t border-zuno-border bg-zuno-surface">
         <div className="max-w-4xl mx-auto px-6 py-8 text-center">
           <p className="text-zuno-muted">
-            © 2024 Zuno. Built with Next.js and Supabase.
+            © 2024 ZunoBio. Built with Next.js and Supabase.
           </p>
         </div>
       </footer>

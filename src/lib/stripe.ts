@@ -33,7 +33,7 @@ export async function createCheckoutSession({
   buyerEmail,
   successUrl,
   cancelUrl,
-  applicationFeePercent = 10, // Zuno takes 10%
+  applicationFeePercent = 10, // ZunoBio takes 10%
 }: {
   productId:              string
   priceId:                string

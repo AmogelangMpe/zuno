@@ -1,4 +1,4 @@
-# Zuno — Personal Link Page Platform
+# ZunoBio — Personal Link Page Platform
 
 A full-stack link page platform built with Next.js 14, Supabase, and Tailwind CSS.
 
@@ -100,7 +100,7 @@ supabase/
 1. Push your code to GitHub
 2. Go to [vercel.com](https://vercel.com) and import the repo
 3. Add all environment variables from `.env.example` in the Vercel dashboard
-4. Change `NEXT_PUBLIC_APP_URL` to your production domain (e.g. `https://zuno.app`)
+4. Change `NEXT_PUBLIC_APP_URL` to your production domain (e.g. `https://zunobio.com`)
 5. Deploy — Vercel handles everything automatically
 
 ---
@@ -109,7 +109,7 @@ supabase/
 
 1. **Sign up** at `/auth/signup` — choose a username (becomes their public URL)
 2. **Edit their page** at `/edit` — add photos, bio, social links, sections, links, theme
-3. **Share** their public URL — `zuno.app/theirusername`
+3. **Share** their public URL — `zunobio.com/theirusername`
 4. **Track** views and clicks on their **dashboard**
 
 ---

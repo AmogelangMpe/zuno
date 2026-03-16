@@ -25,7 +25,7 @@ export default async function BrandDashboardPage() {
   return (
     <main className="min-h-screen bg-zuno-bg">
       <nav className="flex items-center justify-between px-6 py-4 border-b border-zuno-border bg-zuno-surface">
-        <Link href="/" className="font-serif italic text-xl">Zuno <span className="text-sm font-sans not-italic text-zuno-muted">for Brands</span></Link>
+        <Link href="/" className="font-serif italic text-xl">ZunoBio <span className="text-sm font-sans not-italic text-zuno-muted">for Brands</span></Link>
         <span className="text-sm text-zuno-muted">{brand.company_name}</span>
       </nav>
 

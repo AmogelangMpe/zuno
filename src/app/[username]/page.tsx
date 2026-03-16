@@ -17,8 +17,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data) return { title: 'Not found' }
 
   return {
-    title: `${data.display_name || params.username} | Zuno`,
-    description: data.bio || `Check out ${data.display_name}'s Zuno page`,
+    title: `${data.display_name || params.username} | ZunoBio`,
+    description: data.bio || `Check out ${data.display_name}'s ZunoBio page`,
     openGraph: {
       images: data.cover_url ? [data.cover_url] : [],
     },

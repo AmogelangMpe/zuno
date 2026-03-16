@@ -41,11 +41,16 @@ export default function SignupPage() {
     }
 
     // Create auth user
+    const fallbackAppUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://zunobio.com'
+    const appUrl = typeof window !== 'undefined' ? window.location.origin : fallbackAppUrl
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+        emailRedirectTo: `${appUrl}/auth/callback`,
+        data: {
+          full_name: name.trim(),
+        },
       },
     })
 
@@ -57,7 +62,7 @@ export default function SignupPage() {
 
     // user created; profile will be created after email confirmation
     toast.success('Account created! Please check your email to confirm.')
-    router.push('/auth/confirm')
+    router.push(`/auth/confirm?email=${encodeURIComponent(email.trim())}`)
   }
 
   return (

@@ -16,6 +16,41 @@ type VideoItem = {
   platform:  'youtube' | 'tiktok'
 }
 
+function pickTikTokThumbnail(item: any): string | null {
+  const candidates = [
+    item?.video?.cover,
+    item?.video?.originCover,
+    item?.video?.dynamicCover,
+    item?.video?.playAddr,
+    item?.cover,
+    item?.thumbnail,
+    item?.video?.cover?.url_list?.[0],
+    item?.video?.originCover?.url_list?.[0],
+    item?.video?.dynamicCover?.url_list?.[0],
+  ]
+
+  const found = candidates.find((v): v is string => typeof v === 'string' && v.startsWith('http'))
+  return found || null
+}
+
+async function fetchTikTokOEmbedThumbnail(videoUrl: string): Promise<string | null> {
+  try {
+    const res = await fetch(`https://www.tiktok.com/oembed?url=${encodeURIComponent(videoUrl)}`, {
+      signal: AbortSignal.timeout(6000),
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; ZunoBio/1.0)',
+        'Accept': 'application/json',
+      },
+      cache: 'no-store',
+    })
+    if (!res.ok) return null
+    const data = await res.json()
+    return typeof data?.thumbnail_url === 'string' ? data.thumbnail_url : null
+  } catch {
+    return null
+  }
+}
+
 async function resolveYouTubeChannelId(channelUrl: string): Promise<string | null> {
   try {
     const u = new URL(channelUrl)
@@ -108,12 +143,25 @@ async function fetchTikTokFeed(channelUrl: string): Promise<VideoItem[]> {
     const items = findItemList(data)
     if (!items) return []
 
-    return items.slice(0, 10).map((item: any) => ({
-      title:     item.desc || 'TikTok video',
-      url:       `https://www.tiktok.com/@${username}/video/${item.id}`,
-      thumbnail: item.video?.cover || item.video?.originCover || null,
-      platform:  'tiktok' as const,
-    }))
+    const videos = await Promise.all(
+      items.slice(0, 10).map(async (item: any) => {
+        const videoUrl = `https://www.tiktok.com/@${username}/video/${item.id}`
+        let thumbnail = pickTikTokThumbnail(item)
+
+        if (!thumbnail) {
+          thumbnail = await fetchTikTokOEmbedThumbnail(videoUrl)
+        }
+
+        return {
+          title: item.desc || 'TikTok video',
+          url: videoUrl,
+          thumbnail,
+          platform: 'tiktok' as const,
+        }
+      })
+    )
+
+    return videos
   } catch (e) {
     console.error('fetchTikTokFeed error:', e)
     return []

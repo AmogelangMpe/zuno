@@ -2,10 +2,12 @@ import { createClient } from '@supabase/supabase-js'
 import { NextResponse, type NextRequest } from 'next/server'
 import { v4 as uuidv4 } from 'uuid'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+  function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 
 type VideoItem = {
   title:     string
@@ -144,6 +146,7 @@ async function fetchTikTokFeed(channelUrl: string): Promise<VideoItem[]> {
 // ── Core sync ─────────────────────────────────────────────────────────────────
 
 async function syncSection(section: any): Promise<{ synced: number; error?: string }> {
+  const supabase = getSupabase()
   try {
     const channelUrl: string = section.channel_url
     if (!channelUrl) return { synced: 0 }
@@ -216,6 +219,7 @@ async function syncSection(section: any): Promise<{ synced: number; error?: stri
 // ── GET — cron job ────────────────────────────────────────────────────────────
 
 export async function GET(request: NextRequest) {
+  const supabase = getSupabase()
   try {
     const authHeader = request.headers.get('authorization')
     const cronSecret = process.env.CRON_SECRET
@@ -255,6 +259,7 @@ export async function GET(request: NextRequest) {
 // ── POST — manual sync from editor ───────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
+  const supabase = getSupabase()
   try {
     const body = await request.json()
     const { sectionId } = body

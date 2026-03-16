@@ -3,10 +3,11 @@ import { createClient } from '@supabase/supabase-js'
 import crypto from 'crypto'
 
 function getSupabase() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+  const supabaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim()
+  const serviceRoleKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim()
 
-  if (!supabaseUrl || !serviceRoleKey) {
+  // Guard against missing or malformed env values in deployment environments.
+  if (!supabaseUrl || !serviceRoleKey || !/^https?:\/\//.test(supabaseUrl)) {
     return null
   }
 

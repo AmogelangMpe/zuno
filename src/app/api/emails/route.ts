@@ -1,13 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 
-// POST /api/emails/subscribe
 export async function POST(req: NextRequest) {
+  const supabase = getSupabase()
   const { email, name, profileId, source } = await req.json()
 
   if (!email || !profileId) {
@@ -23,7 +25,6 @@ export async function POST(req: NextRequest) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  // Optional: sync to Mailchimp if configured
   if (process.env.MAILCHIMP_API_KEY && process.env.MAILCHIMP_LIST_ID) {
     await syncToMailchimp(email, name)
   }
@@ -31,12 +32,11 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ success: true })
 }
 
-// GET /api/emails/export?profileId=xxx — returns CSV
 export async function GET(req: NextRequest) {
+  const supabase = getSupabase()
   const profileId = req.nextUrl.searchParams.get('profileId')
   if (!profileId) return NextResponse.json({ error: 'Missing profileId' }, { status: 400 })
 
-  // Auth check
   const { data: { user } } = await (await import('@/lib/supabase/server')).createClient().auth.getUser()
   if (!user || user.id !== profileId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -60,7 +60,7 @@ export async function GET(req: NextRequest) {
 
   const csv = [
     'email,name,source,date',
-    ...subscribers.map(s =>
+    ...subscribers.map((s: any) =>
       `"${s.email}","${s.name || ''}","${s.source}","${s.created_at}"`
     ),
   ].join('\n')

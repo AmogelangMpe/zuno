@@ -10,7 +10,6 @@ const INDUSTRIES = ['Fashion','Beauty','Lifestyle','Tech','Food & Beverage','Fit
 
 export default function BrandSignupPage() {
   const router = useRouter()
-  const supabase = createClient()
 
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
@@ -21,6 +20,7 @@ export default function BrandSignupPage() {
   const [loading, setLoading]   = useState(false)
 
   async function handleSignup() {
+    const supabase = createClient()
     if (!company || !email || !password) {
       toast.error('Please fill in all required fields')
       return

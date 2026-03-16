@@ -6,11 +6,11 @@ import { createClient } from '@/lib/supabase/client'
 import toast from 'react-hot-toast'
 
 export default function ConfirmPage() {
-  const supabase = createClient()
   const [status, setStatus] = useState<'checking' | 'done'>('checking')
 
   useEffect(() => {
     async function ensureProfile() {
+      const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) {
         setStatus('done')
@@ -46,7 +46,7 @@ export default function ConfirmPage() {
     }
 
     ensureProfile()
-  }, [supabase])
+  }, [])
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 bg-zuno-bg text-center">

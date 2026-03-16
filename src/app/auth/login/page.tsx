@@ -17,7 +17,6 @@ export default function LoginPage() {
 function LoginPageContent() {
   const searchParams = useSearchParams()
   const redirect = searchParams.get('redirect') || '/dashboard'
-  const supabase = createClient()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -25,6 +24,7 @@ function LoginPageContent() {
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
+    const supabase = createClient()
 
     if (!email || !password) {
       toast.error('Please enter email and password')

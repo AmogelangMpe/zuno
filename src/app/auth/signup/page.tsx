@@ -9,7 +9,6 @@ import toast from 'react-hot-toast'
 
 export default function SignupPage() {
   const router = useRouter()
-  const supabase = createClient()
 
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
@@ -19,6 +18,7 @@ export default function SignupPage() {
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault()
+    const supabase = createClient()
 
     if (!isValidUsername(username)) {
       toast.error('Username must be 3–30 characters: letters, numbers, underscores only')
@@ -42,12 +42,12 @@ export default function SignupPage() {
 
     // Create auth user
     const { data: authData, error: authError } = await supabase.auth.signUp({
-  email,
-  password,
-  options: {
-  emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
-}
-})
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
+      },
+    })
 
     if (authError || !authData.user) {
       toast.error(authError?.message || 'Something went wrong')

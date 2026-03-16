@@ -2,14 +2,21 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
 function getSupabase() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  const supabaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '').trim()
+  const serviceRoleKey = (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim()
+
+  if (!supabaseUrl || !serviceRoleKey || !/^https?:\/\//.test(supabaseUrl)) {
+    return null
+  }
+
+  return createClient(supabaseUrl, serviceRoleKey)
 }
 
 export async function GET(req: NextRequest) {
   const supabase = getSupabase()
+  if (!supabase) {
+    return NextResponse.json({ error: 'Server not configured' }, { status: 500 })
+  }
   const token = req.nextUrl.searchParams.get('token')
   if (!token) return NextResponse.json({ error: 'Missing token' }, { status: 400 })
 

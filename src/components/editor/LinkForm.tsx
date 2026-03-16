@@ -10,6 +10,7 @@ const LINK_TYPES: Record<SectionType, { type: LinkType; label: string }[]> = {
   events:  [{ type: 'event',        label: 'Event'         }],
   press:   [{ type: 'press',        label: 'Press Feature' }],
   connect: [{ type: 'connect_link', label: 'Connect Link'  }],
+  collabs: [{ type: 'brand',        label: 'Brand'         }, { type: 'service', label: 'Service' }],
 }
 
 function getYouTubeId(url: string): string | null {

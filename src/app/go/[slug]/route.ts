@@ -2,15 +2,26 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import crypto from 'crypto'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+function getSupabase() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    return null
+  }
+
+  return createClient(supabaseUrl, serviceRoleKey)
+}
 
 export async function GET(
   req: NextRequest,
   { params }: { params: { slug: string } }
 ) {
+  const supabase = getSupabase()
+  if (!supabase) {
+    return NextResponse.redirect(new URL('/', req.url))
+  }
+
   const { data: link } = await supabase
     .from('affiliate_links')
     .select('id, profile_id, destination')
@@ -22,7 +33,6 @@ export async function GET(
     return NextResponse.redirect(new URL('/', req.url))
   }
 
-  // Record click (fire and forget — don't block redirect)
   const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || ''
   const ipHash = crypto.createHash('sha256').update(ip).digest('hex')
 
@@ -34,9 +44,7 @@ export async function GET(
     ip_hash:    ipHash,
   })
 
-  // Increment total clicks
   supabase.rpc('increment_affiliate_clicks', { link_id: link.id })
 
-  // Redirect to destination
   return NextResponse.redirect(link.destination)
 }

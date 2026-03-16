@@ -62,7 +62,7 @@ export default function SignupPage() {
 
     // user created; profile will be created after email confirmation
     toast.success('Account created! Please check your email to confirm.')
-    router.push(`/auth/confirm?email=${encodeURIComponent(email.trim())}`)
+    router.push('/auth/login')
   }
 
   return (

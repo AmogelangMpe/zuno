@@ -52,8 +52,8 @@ function LoginPageContent() {
       if (error) {
         console.error('❌ Login error:', error.message)
         if (error.message.toLowerCase().includes('email not confirmed')) {
-          toast.error('Please confirm your email first. We can resend it on the confirmation page.')
-          window.location.href = `/auth/confirm?email=${encodeURIComponent(email.trim())}`
+          toast.error('Please confirm your email first, then log in again.')
+          setLoading(false)
           return
         }
         toast.error(error.message || 'Login failed')

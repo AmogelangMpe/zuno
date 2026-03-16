@@ -122,3 +122,4 @@ supabase/
 - [ ] More analytics (country, device, referrer breakdown)
 - [ ] Pro plan with premium themes
 - [ ] QR code generator for each profile
+ 

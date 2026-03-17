@@ -185,7 +185,7 @@ export default function ProfilePreview({ profile, socialLinks, sections, showJoi
               paddingBottom: '2px',
             }}
           >
-            Want your own page? Create one
+            Create your own
           </a>
         </div>
       )}

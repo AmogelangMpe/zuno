@@ -162,7 +162,18 @@ export default function ProfilePreview({ profile, socialLinks, sections, showJoi
       ))}
 
       {showJoinCta && (
-        <div style={{ padding: '26px 18px 30px', textAlign: 'center' }}>
+        <div
+          style={{
+            position: 'fixed',
+            left: '50%',
+            bottom: '10px',
+            transform: 'translateX(-50%)',
+            width: 'min(480px, calc(100% - 24px))',
+            textAlign: 'center',
+            pointerEvents: 'none',
+            zIndex: 30,
+          }}
+        >
           <a
             href="/auth/signup"
             style={{
@@ -174,6 +185,7 @@ export default function ProfilePreview({ profile, socialLinks, sections, showJoi
               textDecoration: 'none',
               borderBottom: `1px solid ${profile.theme_text}44`,
               paddingBottom: '2px',
+              pointerEvents: 'auto',
             }}
           >
             Want your own page? Create one

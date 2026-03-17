@@ -11,9 +11,10 @@ type Props = {
   profile:     Profile
   socialLinks: SocialLink[]
   sections:    (Section & { links: ZunoLink[] })[]
+  showJoinCta?: boolean
 }
 
-export default function ProfilePreview({ profile, socialLinks, sections }: Props) {
+export default function ProfilePreview({ profile, socialLinks, sections, showJoinCta = false }: Props) {
   const enabledSections = sections.filter(s => s.is_enabled)
   const [activeSection, setActiveSection] = useState(enabledSections[0]?.id || '')
 
@@ -159,6 +160,26 @@ export default function ProfilePreview({ profile, socialLinks, sections }: Props
           <SectionContent section={section} profile={profile} theme={{ bg: profile.theme_bg, surface: profile.theme_surface, text: profile.theme_text, accent: profile.theme_accent }} />
         </div>
       ))}
+
+      {showJoinCta && (
+        <div style={{ padding: '26px 18px 30px', textAlign: 'center' }}>
+          <a
+            href="/auth/signup"
+            style={{
+              display: 'inline-block',
+              fontSize: '12px',
+              letterSpacing: '0.04em',
+              opacity: 0.72,
+              color: profile.theme_text,
+              textDecoration: 'none',
+              borderBottom: `1px solid ${profile.theme_text}44`,
+              paddingBottom: '2px',
+            }}
+          >
+            Want your own page? Create one
+          </a>
+        </div>
+      )}
     </div>
   )
 }

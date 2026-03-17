@@ -117,6 +117,8 @@ window.location.href = redirect
             Sign up
           </Link>
         </p>
+
+        <p className="text-xs text-zuno-muted text-center mt-10">ZunoBio © 2026</p>
       </div>
     </div>
   )

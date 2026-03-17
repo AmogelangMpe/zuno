@@ -63,6 +63,7 @@ export default async function ProfilePage({ params }: Props) {
         profile={profile}
         socialLinks={socialLinks || []}
         sections={sectionsWithLinks}
+        showJoinCta
       />
     </>
   )

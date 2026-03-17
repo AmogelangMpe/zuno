@@ -83,11 +83,11 @@ export default function SignupPage() {
             required
           />
           <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-zuno-muted">
+            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm tracking-wide text-zuno-muted pointer-events-none">
               zunobio.com/
             </span>
             <input
-              className="input pl-[4.5rem]"
+              className="input pl-[8.2rem] tracking-wide"
               type="text"
               placeholder="username"
               value={username}
@@ -123,6 +123,8 @@ export default function SignupPage() {
             Log in
           </Link>
         </p>
+
+        <p className="text-xs text-zuno-muted text-center mt-10">ZunoBio © 2026</p>
       </div>
     </div>
   )

@@ -38,26 +38,26 @@ export default async function AffiliatePage() {
 
   return (
     <main className="min-h-screen bg-zuno-bg">
-      <nav className="flex items-center justify-between px-6 py-4 border-b border-zuno-border bg-zuno-surface">
-        <Link href="/dashboard" className="font-serif italic text-xl">ZunoBio</Link>
-        <Link href="/dashboard" className="btn-ghost text-sm">← Dashboard</Link>
+      <nav className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 border-b border-zuno-border bg-zuno-surface gap-3">
+        <Link href="/dashboard" className="font-serif italic text-lg sm:text-xl">ZunoBio</Link>
+        <Link href="/dashboard" className="btn-ghost text-xs sm:text-sm py-1.5 sm:py-2">← Dashboard</Link>
       </nav>
 
-      <div className="max-w-2xl mx-auto px-6 py-10">
-        <h1 className="font-serif italic text-3xl mb-2">Affiliate Storefront</h1>
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+        <h1 className="font-serif italic text-2xl sm:text-3xl mb-2">Affiliate Storefront</h1>
         <p className="text-sm text-zuno-muted mb-8">
           Add your affiliate links. Each gets a short tracked URL at{' '}
           <span className="text-zuno-text">zunobio.com/go/your-slug</span>
         </p>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 gap-4 mb-8">
-          <div className="card p-5 text-center">
-            <div className="font-serif text-3xl font-medium mb-1">{totalClicks.toLocaleString()}</div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-8">
+          <div className="card p-4 sm:p-5 text-center">
+            <div className="font-serif text-2xl sm:text-3xl font-medium mb-1">{totalClicks.toLocaleString()}</div>
             <div className="text-xs text-zuno-muted uppercase tracking-wider">All-time clicks</div>
           </div>
-          <div className="card p-5 text-center">
-            <div className="font-serif text-3xl font-medium mb-1">{links?.length || 0}</div>
+          <div className="card p-4 sm:p-5 text-center">
+            <div className="font-serif text-2xl sm:text-3xl font-medium mb-1">{links?.length || 0}</div>
             <div className="text-xs text-zuno-muted uppercase tracking-wider">Active links</div>
           </div>
         </div>

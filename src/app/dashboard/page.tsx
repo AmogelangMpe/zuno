@@ -65,48 +65,48 @@ export default async function DashboardPage() {
   const envAppUrl = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '')
   const appUrl = requestOrigin || envAppUrl || 'https://zunobio.com'
   const profileUrl = `${appUrl}/${username}`
-  const profileUrlDisplay = profileUrl.replace(/^https?:\/\//, '')
+  const profileUrlDisplay = `zunobio.com/${username}`
 
   return (
     <main className="min-h-screen bg-zuno-bg">
       {/* Top bar */}
-      <nav className="flex items-center justify-between px-6 py-4 border-b border-zuno-border bg-zuno-surface">
-        <span className="font-serif italic text-xl">ZunoBio</span>
-        <div className="flex items-center gap-3">
+      <nav className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-4 gap-3 border-b border-zuno-border bg-zuno-surface">
+        <span className="font-serif italic text-lg sm:text-xl shrink-0">ZunoBio</span>
+        <div className="flex items-center justify-end flex-wrap gap-2 sm:gap-3">
           <a
             href={profileUrl}
             target="_blank"
-            className="btn-ghost text-xs"
+            className="btn-ghost text-[11px] sm:text-xs py-1.5 sm:py-2 px-2.5 sm:px-3 whitespace-nowrap"
           >
             View page ↗
           </a>
-          <Link href="/edit" className="btn-primary text-sm py-2">
+          <Link href="/edit" className="btn-primary text-xs sm:text-sm py-1.5 sm:py-2 px-2.5 sm:px-4 whitespace-nowrap">
             Edit page
           </Link>
-          <LogoutButton />
+          <LogoutButton className="btn-secondary text-xs sm:text-sm py-1.5 sm:py-2 px-2.5 sm:px-4 whitespace-nowrap" />
         </div>
       </nav>
 
-      <div className="max-w-2xl mx-auto px-6 py-10">
-        <h1 className="font-serif italic text-3xl mb-1">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-8 sm:py-10">
+        <h1 className="font-serif italic text-2xl sm:text-3xl mb-1">
           Hey, {finalProfile?.display_name || finalProfile?.username || 'there'} 👋
         </h1>
         <p className="text-sm text-zuno-muted mb-8">
           Your page is live at{' '}
-          <a href={profileUrl} target="_blank" className="underline underline-offset-2 text-zuno-text tracking-wide break-all">
+          <a href={profileUrl} target="_blank" className="underline underline-offset-2 text-zuno-text break-words">
             {profileUrlDisplay}
           </a>
         </p>
 
         {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-10">
           {[
             { label: 'Total views',   value: totalViews  ?? 0 },
             { label: 'Total clicks',  value: totalClicks ?? 0 },
             { label: 'Views today',   value: viewsToday  ?? 0 },
           ].map(s => (
-            <div key={s.label} className="card p-5 text-center">
-              <div className="font-serif text-3xl font-medium mb-1">{s.value}</div>
+            <div key={s.label} className="card p-4 sm:p-5 text-center">
+              <div className="font-serif text-2xl sm:text-3xl font-medium mb-1">{s.value}</div>
               <div className="text-xs text-zuno-muted uppercase tracking-wider">{s.label}</div>
             </div>
           ))}
@@ -114,7 +114,7 @@ export default async function DashboardPage() {
 
         {/* Quick actions */}
         <h2 className="font-medium mb-4">Quick actions</h2>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
           {[
             { label: 'Edit your page',     href: '/edit',              desc: 'Update content, links, photos' },
             { label: 'Share your link',    href: profileUrl,           desc: profileUrlDisplay, external: true },
@@ -125,10 +125,10 @@ export default async function DashboardPage() {
               key={a.label}
               href={a.href}
               target={a.external ? '_blank' : undefined}
-              className="card p-5 hover:shadow-md transition-shadow"
+              className="card p-4 sm:p-5 hover:shadow-md transition-shadow"
             >
               <div className="font-medium text-sm mb-1">{a.label}</div>
-              <div className="text-xs text-zuno-muted tracking-wide break-all">{a.desc}</div>
+              <div className="text-xs text-zuno-muted break-words">{a.desc}</div>
             </Link>
           ))}
         </div>

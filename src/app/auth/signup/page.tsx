@@ -19,6 +19,7 @@ export default function SignupPage() {
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault()
     const supabase = createClient()
+    const normalizedEmail = email.trim().toLowerCase()
 
     if (!isValidUsername(username)) {
       toast.error('Username must be 3–30 characters: letters, numbers, underscores only')
@@ -44,7 +45,7 @@ export default function SignupPage() {
     const fallbackAppUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://zunobio.com'
     const appUrl = typeof window !== 'undefined' ? window.location.origin : fallbackAppUrl
     const { data: authData, error: authError } = await supabase.auth.signUp({
-      email,
+      email: normalizedEmail,
       password,
       options: {
         emailRedirectTo: `${appUrl}/auth/callback`,
@@ -55,10 +56,24 @@ export default function SignupPage() {
     })
 
     if (authError || !authData.user) {
-      toast.error(authError?.message || 'Something went wrong')
+      if (authError?.message?.toLowerCase().includes('already registered')) {
+        toast.error('This email already has an account. Please log in instead.')
+      } else {
+        toast.error(authError?.message || 'Something went wrong')
+      }
       setLoading(false)
       return
     }
+
+    // Supabase can return an obfuscated user for existing accounts.
+    if (!authData.user.identities || authData.user.identities.length === 0) {
+      toast.error('This email already has an account. Please log in instead.')
+      setLoading(false)
+      return
+    }
+
+    // Never auto-enter dashboard from signup. User should confirm/login first.
+    await supabase.auth.signOut()
 
     // user created; profile will be created after email confirmation
     toast.success('Account created! Please check your email to confirm.')

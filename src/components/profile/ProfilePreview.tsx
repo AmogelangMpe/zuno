@@ -164,14 +164,13 @@ export default function ProfilePreview({ profile, socialLinks, sections, showJoi
       {showJoinCta && (
         <div
           style={{
-            position: 'fixed',
-            left: '50%',
+            position: 'sticky',
+            marginTop: '18px',
+            padding: '10px 18px calc(10px + env(safe-area-inset-bottom))',
             bottom: '10px',
-            transform: 'translateX(-50%)',
-            width: 'min(480px, calc(100% - 24px))',
             textAlign: 'center',
-            pointerEvents: 'none',
             zIndex: 30,
+            background: `linear-gradient(to top, ${profile.theme_bg}F2, ${profile.theme_bg}00)`,
           }}
         >
           <a
@@ -185,7 +184,6 @@ export default function ProfilePreview({ profile, socialLinks, sections, showJoi
               textDecoration: 'none',
               borderBottom: `1px solid ${profile.theme_text}44`,
               paddingBottom: '2px',
-              pointerEvents: 'auto',
             }}
           >
             Want your own page? Create one

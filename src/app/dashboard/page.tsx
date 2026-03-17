@@ -93,7 +93,7 @@ export default async function DashboardPage() {
         </h1>
         <p className="text-sm text-zuno-muted mb-8">
           Your page is live at{' '}
-          <a href={profileUrl} target="_blank" className="underline underline-offset-2 text-zuno-text">
+          <a href={profileUrl} target="_blank" className="underline underline-offset-2 text-zuno-text tracking-wide break-all">
             {profileUrlDisplay}
           </a>
         </p>
@@ -128,7 +128,7 @@ export default async function DashboardPage() {
               className="card p-5 hover:shadow-md transition-shadow"
             >
               <div className="font-medium text-sm mb-1">{a.label}</div>
-              <div className="text-xs text-zuno-muted truncate">{a.desc}</div>
+              <div className="text-xs text-zuno-muted tracking-wide break-all">{a.desc}</div>
             </Link>
           ))}
         </div>

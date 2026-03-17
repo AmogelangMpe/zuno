@@ -35,6 +35,8 @@ export default function ProfilePreview({ profile, socialLinks, sections, showJoi
         fontFamily:    'var(--font-dm-sans, DM Sans, sans-serif)',
         maxWidth:      '480px',
         margin:        '0 auto',
+        display:       'flex',
+        flexDirection: 'column',
         ...style,
       }}
     >
@@ -164,12 +166,9 @@ export default function ProfilePreview({ profile, socialLinks, sections, showJoi
       {showJoinCta && (
         <div
           style={{
-            position: 'sticky',
-            marginTop: '18px',
-            padding: '10px 18px calc(10px + env(safe-area-inset-bottom))',
-            bottom: '10px',
+            marginTop: 'auto',
+            padding: '24px 18px calc(14px + env(safe-area-inset-bottom))',
             textAlign: 'center',
-            zIndex: 30,
             background: `linear-gradient(to top, ${profile.theme_bg}F2, ${profile.theme_bg}00)`,
           }}
         >

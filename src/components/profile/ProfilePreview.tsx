@@ -54,7 +54,7 @@ export default function ProfilePreview({ profile, socialLinks, sections, showJoi
 
       {/* Profile info */}
       <div className="text-center px-5 mt-[-70px] relative z-10 pb-2">
-        <h1 style={{ fontFamily: 'var(--font-playfair, Playfair Display, serif)', fontStyle: 'italic', fontSize: '38px', fontWeight: 400, lineHeight: 1.3, letterSpacing: '0.3px', marginBottom: '8px', wordBreak: 'break-word' }}>
+        <h1 style={{ fontFamily: 'var(--font-playfair, Playfair Display, serif)', fontStyle: 'italic', fontSize: '38px', fontWeight: 400, lineHeight: 1.5, letterSpacing: '0.6px', marginBottom: '8px', wordBreak: 'break-word' }}>
           {profile.display_name || profile.username}
         </h1>
         {profile.bio && (

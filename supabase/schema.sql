@@ -182,7 +182,8 @@ begin
     (new.id, 'shop',    'Shop',    1),
     (new.id, 'events',  'Events',  2),
     (new.id, 'press',   'Press',   3),
-    (new.id, 'connect', 'Connect', 4);
+    (new.id, 'connect', 'Connect', 4),
+    (new.id, 'collabs', 'Collabs', 5);
   return new;
 end;
 $$ language plpgsql security definer;

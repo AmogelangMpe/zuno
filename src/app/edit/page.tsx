@@ -27,11 +27,33 @@ export default async function EditPage() {
     .eq('profile_id', user.id)
     .order('sort_order')
 
+  let finalSections = sections || []
+
+  // Backfill missing collabs section for older profiles.
+  if (!finalSections.some(s => s.type === 'collabs')) {
+    const nextSort = finalSections.length ? Math.max(...finalSections.map(s => s.sort_order || 0)) + 1 : 0
+    const { data: createdCollabs } = await supabase
+      .from('sections')
+      .insert({
+        profile_id: user.id,
+        type: 'collabs',
+        title: 'Collabs',
+        sort_order: nextSort,
+        is_enabled: true,
+      })
+      .select('*, links(*)')
+      .maybeSingle()
+
+    if (createdCollabs) {
+      finalSections = [...finalSections, createdCollabs]
+    }
+  }
+
   return (
     <EditorClient
       profile={profile}
       socialLinks={socialLinks || []}
-      sections={sections || []}
+      sections={finalSections}
     />
   )
 }

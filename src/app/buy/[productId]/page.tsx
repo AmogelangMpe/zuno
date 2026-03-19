@@ -49,7 +49,7 @@ export default async function BuyPage({ params }: { params: { productId: string 
 
         <p className="text-center text-xs text-zuno-muted">
           Secure checkout powered by Stripe.<br />
-          You'll receive a download link immediately after payment.
+          You&apos;ll receive a download link immediately after payment.
         </p>
       </div>
     </main>

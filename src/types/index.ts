@@ -1,5 +1,5 @@
 // ============================================================
-// ZunoBio — TypeScript Types
+// Zuno — TypeScript Types
 // ============================================================
 
 export type Theme = {
@@ -21,8 +21,8 @@ export type Profile = {
   theme_text:        string
   theme_accent:      string
   is_published:      boolean
-  open_to_collabs:   boolean        // shows "Open to collabs" badge + contact CTA
-  collab_email:      string | null  // contact email for collab enquiries
+  open_to_collabs:   boolean
+  collab_email:      string | null
   created_at:        string
   updated_at:        string
 }
@@ -47,7 +47,7 @@ export type SocialLink = {
   created_at:     string
 }
 
-export type SectionType = 'videos' | 'shop' | 'events' | 'press' | 'connect' | 'collabs'
+export type SectionType = 'videos' | 'shop' | 'events' | 'press' | 'connect' | 'collabs' | 'books'
 
 export type Section = {
   id:          string
@@ -68,8 +68,9 @@ export type LinkType =
   | 'event'
   | 'press'
   | 'connect_link'
-  | 'brand'        // a brand they've worked with
-  | 'service'      // a service they offer e.g. "Sponsored post"
+  | 'brand'
+  | 'service'
+  | 'book'
 
 export type EventTag = 'Soon' | 'Free' | 'Invite' | 'Live'
 
@@ -79,11 +80,11 @@ export type Link = {
   section_id:  string
   type:        LinkType
   title:       string
-  subtitle:    string | null
+  subtitle:    string | null  // author name for books
   url:         string | null
-  image_url:   string | null
+  image_url:   string | null  // book cover
   price:       string | null
-  platform:    string | null
+  platform:    string | null  // blurb for books
   event_date:  string | null
   event_tag:   EventTag | null
   is_enabled:  boolean

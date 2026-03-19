@@ -11,6 +11,7 @@ const LINK_TYPES: Record<SectionType, { type: LinkType; label: string }[]> = {
   press:   [{ type: 'press',        label: 'Press Feature' }],
   connect: [{ type: 'connect_link', label: 'Connect Link'  }],
   collabs: [{ type: 'brand',        label: 'Brand'         }, { type: 'service', label: 'Service' }],
+  books:   [{ type: 'book',         label: 'Book'          }],
 }
 
 function getYouTubeId(url: string): string | null {
@@ -80,26 +81,25 @@ export default function LinkForm({ sectionType, onSave, onCancel }: Props) {
   const types = LINK_TYPES[sectionType] || []
   const [type, setType]           = useState<LinkType>(types[0]?.type || 'shop_link')
   const [title, setTitle]         = useState('')
-  const [subtitle, setSubtitle]   = useState('')
+  const [subtitle, setSubtitle]   = useState('')  // author for books
   const [url, setUrl]             = useState('')
   const [price, setPrice]         = useState('')
-  const [platform, setPlatform]   = useState('youtube')
+  const [platform, setPlatform]   = useState('youtube')  // blurb for books
   const [eventDate, setEventDate] = useState('')
   const [eventTag, setEventTag]   = useState('Free')
   const [thumbnail, setThumbnail] = useState<string | null>(null)
   const [fetchingThumb, setFetchingThumb] = useState(false)
 
-  const shouldFetchImage = ['video', 'press', 'product', 'shop_link'].includes(type)
+  const isBook    = type === 'book'
+  const isVideo   = type === 'video'
+  const fetchImage = ['video', 'press', 'product', 'shop_link', 'book'].includes(type)
 
   useEffect(() => {
-    if (!shouldFetchImage || !url) {
-      setThumbnail(null)
-      return
-    }
+    if (!fetchImage || !url) { setThumbnail(null); return }
     const timer = setTimeout(async () => {
       setFetchingThumb(true)
       let thumb: string | null = null
-      if (type === 'video') {
+      if (isVideo) {
         thumb = await fetchVideoThumbnail(url)
         setPlatform(detectPlatform(url))
       } else {
@@ -109,7 +109,7 @@ export default function LinkForm({ sectionType, onSave, onCancel }: Props) {
       setFetchingThumb(false)
     }, 700)
     return () => clearTimeout(timer)
-  }, [url, type, shouldFetchImage])
+  }, [url, type, fetchImage, isVideo])
 
   function handleSave() {
     onSave({
@@ -118,14 +118,15 @@ export default function LinkForm({ sectionType, onSave, onCancel }: Props) {
       subtitle:   subtitle || null,
       url:        url || null,
       price:      price || null,
-      platform:   type === 'video' ? platform : null,
+      // for books: store blurb in platform field
+      platform:   isBook ? (platform || null) : (isVideo ? platform : null),
       event_date: eventDate || null,
       event_tag:  (eventTag as any) || null,
       image_url:  thumbnail || null,
     })
   }
 
-  const showLargePreview = url && (type === 'video' || type === 'press' || type === 'product')
+  const showLargePreview = url && (isVideo || type === 'press' || type === 'product' || isBook)
   const showSmallPreview = url && type === 'shop_link'
 
   return (
@@ -138,66 +139,94 @@ export default function LinkForm({ sectionType, onSave, onCancel }: Props) {
         </select>
       )}
 
-      <input className="input text-sm" placeholder="Title *" value={title} onChange={e => setTitle(e.target.value)} required />
-      <input className="input text-sm" placeholder="URL" value={url} onChange={e => setUrl(e.target.value)} />
+      {/* Book-specific fields */}
+      {isBook ? (
+        <>
+          <input className="input text-sm" placeholder="Book title *" value={title} onChange={e => setTitle(e.target.value)} required />
+          <input className="input text-sm" placeholder="Author name" value={subtitle} onChange={e => setSubtitle(e.target.value)} />
+          <input className="input text-sm" placeholder="Buy link (Amazon, Shopify etc.)" value={url} onChange={e => setUrl(e.target.value)} />
 
-      {/* Large preview — video, press, product */}
-      {showLargePreview && (
-        <div className="rounded-xl overflow-hidden bg-zuno-card border border-zuno-border h-36 relative">
-          {fetchingThumb && (
-            <div className="flex items-center justify-center h-full text-xs text-zuno-muted">Fetching image…</div>
-          )}
-          {!fetchingThumb && thumbnail && (
-            <Image src={thumbnail} alt="Preview" fill className="object-cover" unoptimized />
-          )}
-          {!fetchingThumb && !thumbnail && (
-            <div className="flex items-center justify-center h-full text-xs text-zuno-muted">No image found</div>
-          )}
-          {!fetchingThumb && thumbnail && type === 'video' && (
-            <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded-full capitalize">
-              {platform}
+          {/* Cover preview */}
+          {url && (
+            <div className="rounded-xl overflow-hidden bg-zuno-card border border-zuno-border relative" style={{ paddingTop: '60%' }}>
+              {fetchingThumb && (
+                <div className="absolute inset-0 flex items-center justify-center text-xs text-zuno-muted">Fetching cover…</div>
+              )}
+              {!fetchingThumb && thumbnail && (
+                <img src={thumbnail} alt="Cover" className="absolute inset-0 w-full h-full object-cover" />
+              )}
+              {!fetchingThumb && !thumbnail && (
+                <div className="absolute inset-0 flex items-center justify-center text-xs text-zuno-muted">No cover found — you can add one manually</div>
+              )}
             </div>
           )}
-        </div>
-      )}
 
-      {/* Small preview — shop link */}
-      {showSmallPreview && (
-        <div className="flex items-center gap-2 text-xs text-zuno-muted">
-          {fetchingThumb ? (
-            <span>Fetching image…</span>
-          ) : thumbnail ? (
-            <>
-              <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 relative border border-zuno-border">
-                <Image src={thumbnail} alt="" fill className="object-cover" unoptimized />
-              </div>
-              <span style={{ color: '#4a7c59' }}>Image found ✓</span>
-            </>
-          ) : (
-            <span>No image found</span>
-          )}
-        </div>
-      )}
+          {/* Manual cover URL override */}
+          <input
+            className="input text-sm"
+            placeholder="Cover image URL (optional override)"
+            value={thumbnail || ''}
+            onChange={e => setThumbnail(e.target.value || null)}
+          />
 
-      <input className="input text-sm" placeholder="Subtitle (optional)" value={subtitle} onChange={e => setSubtitle(e.target.value)} />
-
-      {type === 'product' && (
-        <input className="input text-sm" placeholder="Price e.g. R 1,200" value={price} onChange={e => setPrice(e.target.value)} />
-      )}
-
-      {type === 'video' && (
-        <select className="input text-sm" value={platform} onChange={e => setPlatform(e.target.value)}>
-          <option value="youtube">YouTube</option>
-          <option value="tiktok">TikTok</option>
-        </select>
-      )}
-
-      {type === 'event' && (
+          <textarea
+            className="input text-sm resize-none h-20"
+            placeholder="Book description / blurb (optional)"
+            value={platform}
+            onChange={e => setPlatform(e.target.value)}
+          />
+          <input className="input text-sm" placeholder="Price e.g. R 299 or $12.99" value={price} onChange={e => setPrice(e.target.value)} />
+        </>
+      ) : (
         <>
-          <input className="input text-sm" type="date" value={eventDate} onChange={e => setEventDate(e.target.value)} />
-          <select className="input text-sm" value={eventTag} onChange={e => setEventTag(e.target.value)}>
-            {['Free', 'Invite', 'Soon', 'Live'].map(t => <option key={t}>{t}</option>)}
-          </select>
+          <input className="input text-sm" placeholder="Title *" value={title} onChange={e => setTitle(e.target.value)} required />
+          <input className="input text-sm" placeholder="URL" value={url} onChange={e => setUrl(e.target.value)} />
+
+          {/* Large preview */}
+          {showLargePreview && (
+            <div className="rounded-xl overflow-hidden bg-zuno-card border border-zuno-border h-36 relative">
+              {fetchingThumb && <div className="flex items-center justify-center h-full text-xs text-zuno-muted">Fetching image…</div>}
+              {!fetchingThumb && thumbnail && <Image src={thumbnail} alt="Preview" fill className="object-cover" unoptimized />}
+              {!fetchingThumb && !thumbnail && <div className="flex items-center justify-center h-full text-xs text-zuno-muted">No image found</div>}
+              {!fetchingThumb && thumbnail && isVideo && (
+                <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded-full capitalize">{platform}</div>
+              )}
+            </div>
+          )}
+
+          {/* Small preview for shop links */}
+          {showSmallPreview && (
+            <div className="flex items-center gap-2 text-xs text-zuno-muted">
+              {fetchingThumb ? <span>Fetching image…</span> : thumbnail ? (
+                <>
+                  <div className="w-8 h-8 rounded-lg overflow-hidden flex-shrink-0 relative border border-zuno-border">
+                    <Image src={thumbnail} alt="" fill className="object-cover" unoptimized />
+                  </div>
+                  <span style={{ color: '#4a7c59' }}>Image found ✓</span>
+                </>
+              ) : <span>No image found</span>}
+            </div>
+          )}
+
+          <input className="input text-sm" placeholder="Subtitle (optional)" value={subtitle} onChange={e => setSubtitle(e.target.value)} />
+
+          {type === 'product' && (
+            <input className="input text-sm" placeholder="Price e.g. R 1,200" value={price} onChange={e => setPrice(e.target.value)} />
+          )}
+          {isVideo && (
+            <select className="input text-sm" value={platform} onChange={e => setPlatform(e.target.value)}>
+              <option value="youtube">YouTube</option>
+              <option value="tiktok">TikTok</option>
+            </select>
+          )}
+          {type === 'event' && (
+            <>
+              <input className="input text-sm" type="date" value={eventDate} onChange={e => setEventDate(e.target.value)} />
+              <select className="input text-sm" value={eventTag} onChange={e => setEventTag(e.target.value)}>
+                {['Free', 'Invite', 'Soon', 'Live'].map(t => <option key={t}>{t}</option>)}
+              </select>
+            </>
+          )}
         </>
       )}
 

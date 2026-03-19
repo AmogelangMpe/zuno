@@ -112,7 +112,7 @@ window.location.href = redirect
         </form>
 
         <p className="text-sm text-zuno-muted text-center mt-6">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/auth/signup" className="text-zuno-text underline underline-offset-2">
             Sign up
           </Link>

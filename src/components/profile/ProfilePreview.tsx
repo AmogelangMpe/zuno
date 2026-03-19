@@ -6,6 +6,7 @@ import type { Profile, SocialLink, Section, Link as ZunoLink } from '@/types'
 import { getPublicUrl } from '@/lib/utils'
 import SocialIcon from './SocialIcon'
 import CollabsSection from './CollabsSection'
+import BooksSection from './BooksSection'
 
 type Props = {
   profile:     Profile
@@ -323,6 +324,10 @@ function SectionContent({ section, profile, theme }: { section: Section & { link
         ))}
       </div>
     )
+  }
+
+  if (section.type === 'books') {
+    return <BooksSection links={section.links} theme={theme} />
   }
 
   if (section.type === 'collabs') {

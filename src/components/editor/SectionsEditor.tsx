@@ -212,7 +212,7 @@ export default function SectionsEditor({ profileId, sections, onChange }: Props)
                       TikTok — manual
                     </p>
                     <p className="text-xs text-zuno-muted">
-                      TikTok doesn't support auto-sync. Add TikTok videos individually using "+ Add item" below — paste each video URL and the thumbnail fetches automatically.
+                      TikTok doesn&apos;t support auto-sync. Add TikTok videos individually using &quot;+ Add item&quot; below — paste each video URL and the thumbnail fetches automatically.
                     </p>
                   </div>
  

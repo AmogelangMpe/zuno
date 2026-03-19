@@ -7,6 +7,11 @@ export async function POST(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL || req.nextUrl.origin || '').replace(/\/$/, '')
+  if (!appUrl) {
+    return NextResponse.json({ error: 'Missing app URL configuration' }, { status: 500 })
+  }
+
   // Check if already has an account
   const { data: existing } = await supabase
     .from('stripe_accounts')
@@ -38,8 +43,8 @@ export async function POST(req: NextRequest) {
   // Generate onboarding link
   const link = await stripe.accountLinks.create({
     account:     accountId,
-    refresh_url: `${process.env.NEXT_PUBLIC_APP_URL}/products?stripe=refresh`,
-    return_url:  `${process.env.NEXT_PUBLIC_APP_URL}/products?stripe=success`,
+    refresh_url: `${appUrl}/products?stripe=refresh`,
+    return_url:  `${appUrl}/products?stripe=success`,
     type:        'account_onboarding',
   })
 

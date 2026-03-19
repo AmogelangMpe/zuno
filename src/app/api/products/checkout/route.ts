@@ -5,6 +5,11 @@ import { stripe } from '@/lib/stripe'
 export async function POST(req: NextRequest) {
   const { productId } = await req.json()
   const supabase = createClient()
+  const appUrl = (process.env.NEXT_PUBLIC_APP_URL || req.nextUrl.origin || '').replace(/\/$/, '')
+
+  if (!appUrl) {
+    return NextResponse.json({ error: 'Missing app URL configuration' }, { status: 500 })
+  }
 
   // Get product + creator's Stripe account
   const { data: product } = await supabase
@@ -20,8 +25,6 @@ export async function POST(req: NextRequest) {
   if (!stripeAccount?.is_onboarded) {
     return NextResponse.json({ error: 'Creator has not set up payments yet' }, { status: 400 })
   }
-
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL
 
   // Create Stripe checkout session
   const session = await stripe.checkout.sessions.create({

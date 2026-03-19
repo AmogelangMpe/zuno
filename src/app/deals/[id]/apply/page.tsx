@@ -34,7 +34,7 @@ export default async function ApplyPage({ params }: { params: { id: string } }) 
         <div className="card p-6 mb-6">
           <div className="flex items-center gap-3 mb-4">
             {deal.brand_profiles?.logo_url ? (
-              <img src={deal.brand_profiles.logo_url} className="w-10 h-10 rounded-xl object-cover" />
+              <img src={deal.brand_profiles.logo_url} alt={deal.brand_profiles?.company_name || 'Brand logo'} className="w-10 h-10 rounded-xl object-cover" />
             ) : (
               <div className="w-10 h-10 rounded-xl bg-zuno-card flex items-center justify-center text-sm font-medium">
                 {deal.brand_profiles?.company_name?.[0]}

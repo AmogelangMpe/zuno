@@ -92,7 +92,7 @@ export default function ProductManager({ profileId, products: initial, canSell }
           <div key={product.id} className="card p-5">
             <div className="flex gap-4">
               {product.cover_url ? (
-                <img src={product.cover_url} className="w-16 h-16 rounded-xl object-cover flex-shrink-0" />
+                <img src={product.cover_url} alt={product.title} className="w-16 h-16 rounded-xl object-cover flex-shrink-0" />
               ) : (
                 <div className="w-16 h-16 rounded-xl bg-zuno-card flex-shrink-0 flex items-center justify-center">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="opacity-30"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>

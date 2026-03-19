@@ -50,7 +50,7 @@ export default async function DealsPage() {
                   <div className="flex items-start justify-between gap-3 mb-3">
                     <div className="flex items-center gap-3">
                       {brand?.logo_url ? (
-                        <img src={brand.logo_url} className="w-9 h-9 rounded-xl object-cover" />
+                        <img src={brand.logo_url} alt={brand?.company_name || 'Brand logo'} className="w-9 h-9 rounded-xl object-cover" />
                       ) : (
                         <div className="w-9 h-9 rounded-xl bg-zuno-card flex items-center justify-center text-xs font-medium">
                           {brand?.company_name?.[0]}

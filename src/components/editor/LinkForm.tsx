@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
+import { createClient } from '@/lib/supabase/client'
 import type { SectionType, LinkType, Link as ZunoLink } from '@/types'
 
 const LINK_TYPES: Record<SectionType, { type: LinkType; label: string }[]> = {
@@ -73,11 +74,12 @@ async function fetchOgImage(url: string): Promise<string | null> {
 
 type Props = {
   sectionType: SectionType
+  profileId:   string
   onSave:      (data: Partial<ZunoLink>) => void
   onCancel:    () => void
 }
 
-export default function LinkForm({ sectionType, onSave, onCancel }: Props) {
+export default function LinkForm({ sectionType, profileId, onSave, onCancel }: Props) {
   const types = LINK_TYPES[sectionType] || []
   const [type, setType]           = useState<LinkType>(types[0]?.type || 'shop_link')
   const [title, setTitle]         = useState('')
@@ -89,6 +91,32 @@ export default function LinkForm({ sectionType, onSave, onCancel }: Props) {
   const [eventTag, setEventTag]   = useState('Free')
   const [thumbnail, setThumbnail] = useState<string | null>(null)
   const [fetchingThumb, setFetchingThumb] = useState(false)
+  const [uploading, setUploading] = useState(false)
+  const coverFileRef = useRef<HTMLInputElement>(null)
+
+  const supabase = createClient()
+
+  async function handleCoverUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploading(true)
+    try {
+      const ext  = file.name.split('.').pop() || 'jpg'
+      const path = `${profileId}/book-covers/${Date.now()}.${ext}`
+      const { error } = await supabase.storage
+        .from('link-images')
+        .upload(path, file, { upsert: true, contentType: file.type })
+      if (error) {
+        console.error('Cover upload failed:', error.message)
+        return
+      }
+      const { data: pub } = supabase.storage.from('link-images').getPublicUrl(path)
+      setThumbnail(pub.publicUrl)
+    } finally {
+      setUploading(false)
+      e.target.value = ''
+    }
+  }
 
   const isBook    = type === 'book'
   const isVideo   = type === 'video'
@@ -161,13 +189,30 @@ export default function LinkForm({ sectionType, onSave, onCancel }: Props) {
             </div>
           )}
 
-          {/* Manual cover URL override */}
-          <input
-            className="input text-sm"
-            placeholder="Cover image URL (optional override)"
-            value={thumbnail || ''}
-            onChange={e => setThumbnail(e.target.value || null)}
-          />
+          {/* Manual cover: upload file or paste URL */}
+          <div className="flex gap-2">
+            <input
+              className="input text-sm flex-1"
+              placeholder="Cover image URL (optional)"
+              value={thumbnail || ''}
+              onChange={e => setThumbnail(e.target.value || null)}
+            />
+            <button
+              type="button"
+              onClick={() => coverFileRef.current?.click()}
+              disabled={uploading}
+              className="btn-secondary text-xs px-3 py-2 whitespace-nowrap flex-shrink-0"
+            >
+              {uploading ? 'Uploading…' : 'Upload image'}
+            </button>
+            <input
+              ref={coverFileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleCoverUpload}
+            />
+          </div>
 
           <textarea
             className="input text-sm resize-none h-20"

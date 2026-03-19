@@ -269,6 +269,7 @@ export default function SectionsEditor({ profileId, sections, onChange }: Props)
               {addingLink === section.id ? (
                 <LinkForm
                   sectionType={section.type}
+                  profileId={profileId}
                   onSave={data => addLink(section.id, data)}
                   onCancel={() => setAddingLink(null)}
                 />

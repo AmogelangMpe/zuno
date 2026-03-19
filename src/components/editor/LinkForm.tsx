@@ -172,7 +172,7 @@ export default function LinkForm({ sectionType, profileId, onSave, onCancel }: P
         <>
           <input className="input text-sm" placeholder="Book title *" value={title} onChange={e => setTitle(e.target.value)} required />
           <input className="input text-sm" placeholder="Author name" value={subtitle} onChange={e => setSubtitle(e.target.value)} />
-          <input className="input text-sm" placeholder="Buy link (Amazon, Shopify etc.)" value={url} onChange={e => setUrl(e.target.value)} />
+          <input className="input text-sm" placeholder="Book link (Amazon, Wattpad, Shopify etc.)" value={url} onChange={e => setUrl(e.target.value)} />
 
           {/* Cover preview */}
           {url && (

@@ -15,6 +15,15 @@ type Props = {
   theme: { bg: string; surface: string; text: string; accent: string }
 }
 
+function isWattpadUrl(url: string | null): boolean {
+  if (!url) return false
+  return /(^|\.)wattpad\.com/i.test(url)
+}
+
+function getBookCtaLabel(url: string | null): string {
+  return isWattpadUrl(url) ? 'Read on Wattpad ↗' : 'Get book ↗'
+}
+
 export default function BooksSection({ links, theme }: Props) {
   if (!links.length) {
     return (
@@ -127,7 +136,7 @@ export default function BooksSection({ links, theme }: Props) {
                   textDecoration:'none',
                 }}
               >
-                Get book ↗
+                {getBookCtaLabel(book.url)}
               </a>
             )}
           </div>

@@ -24,4 +24,5 @@ $$ language sql security definer;
 -- ── MIGRATION: Move 'connect' section to end ──
 -- Run once in Supabase SQL Editor to reorder existing profiles.
 update public.sections set sort_order = 4 where type = 'collabs';
-update public.sections set sort_order = 5 where type = 'connect';
+update public.sections set sort_order = 5 where type = 'books';
+update public.sections set sort_order = 6 where type = 'connect';

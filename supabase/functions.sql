@@ -20,3 +20,8 @@ create or replace function increment_applications(deal_id uuid)
 returns void as $$
   update public.deals set applications_count = applications_count + 1 where id = deal_id;
 $$ language sql security definer;
+
+-- ── MIGRATION: Move 'connect' section to end ──
+-- Run once in Supabase SQL Editor to reorder existing profiles.
+update public.sections set sort_order = 4 where type = 'collabs';
+update public.sections set sort_order = 5 where type = 'connect';

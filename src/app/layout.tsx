@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { DM_Sans, Playfair_Display } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/react'
 import { Toaster } from 'react-hot-toast'
 import './globals.css'
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${dmSans.variable} ${playfair.variable}`}>
       <body className="font-sans bg-zuno-bg text-zuno-text antialiased">
         {children}
+        <Analytics />
         <Toaster
           position="bottom-center"
           toastOptions={{

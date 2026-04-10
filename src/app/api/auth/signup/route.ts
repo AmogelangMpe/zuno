@@ -54,6 +54,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: error.message }, { status: 400 })
     }
 
+    const email = userData.user.email
+    if (email) {
+      // Fire welcome email (don't await — don't block signup)
+      fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, username, displayName }),
+      }).catch(console.error)
+    }
+
     return NextResponse.json({ success: true })
   } catch (error) {
     return NextResponse.json(

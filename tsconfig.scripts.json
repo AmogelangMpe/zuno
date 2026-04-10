@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "noEmit": false
+  },
+  "include": ["scripts/**/*.ts", "src/emails/**/*.tsx"]
+}

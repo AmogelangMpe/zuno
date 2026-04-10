@@ -18,6 +18,7 @@
  *   npx dotenv-cli -e .env.local -- npx tsx scripts/send-welcome.ts
  */
 
+import * as React from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 import { render } from '@react-email/render'
@@ -127,7 +128,7 @@ async function main() {
     const previewImageUrl = `${APP_URL}/zunobio-preview.jpg`
 
     const html = await render(
-      WelcomeEmail({ username: r.username, displayName: r.displayName, profileUrl, previewImageUrl })
+      React.createElement(WelcomeEmail, { username: r.username, displayName: r.displayName, profileUrl, previewImageUrl })
     )
 
     const { error } = await resend.emails.send({

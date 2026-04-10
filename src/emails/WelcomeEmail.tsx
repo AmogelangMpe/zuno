@@ -74,14 +74,14 @@ export default function WelcomeEmail({ username, displayName, profileUrl }: Prop
 
           {/* ── Preview image ── */}
           <Section style={previewImageSection}>
-            <Text style={previewCaption}>✨ YOUR PAGE LOOKS LIKE THIS</Text>
+            <Text style={previewCaption}>✨ HERE&apos;S WHAT&apos;S POSSIBLE</Text>
             <Img
               src={`${process.env.NEXT_PUBLIC_APP_URL || 'https://zunobio.com'}/zunobio-preview.jpg`}
               alt="Example Zunobio profile page"
               width="464"
               style={previewImg}
             />
-            <Text style={previewSubCaption}>Yours will look even better.</Text>
+            <Text style={previewSubCaption}>This is what a Zunobio page looks like. Yours is waiting.</Text>
           </Section>
 
           <Hr style={divider} />

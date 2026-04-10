@@ -37,10 +37,11 @@ async function sleep(ms: number) {
 }
 
 async function sendWelcomeEmail(email: string, username: string, displayName: string) {
-  const profileUrl = `${appUrl}/${username}`
+  const profileUrl      = `${appUrl}/${username}`
+  const previewImageUrl = `${appUrl}/zunobio-preview.jpg`
 
   const html = await render(
-    WelcomeEmail({ username, displayName, profileUrl })
+    WelcomeEmail({ username, displayName, profileUrl, previewImageUrl })
   )
 
   const { error } = await resend.emails.send({

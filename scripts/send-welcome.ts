@@ -123,10 +123,11 @@ async function main() {
   let failed = 0
 
   for (const r of recipients) {
-    const profileUrl = `${APP_URL}/${r.username}`
+    const profileUrl      = `${APP_URL}/${r.username}`
+    const previewImageUrl = `${APP_URL}/zunobio-preview.jpg`
 
     const html = await render(
-      WelcomeEmail({ username: r.username, displayName: r.displayName, profileUrl })
+      WelcomeEmail({ username: r.username, displayName: r.displayName, profileUrl, previewImageUrl })
     )
 
     const { error } = await resend.emails.send({

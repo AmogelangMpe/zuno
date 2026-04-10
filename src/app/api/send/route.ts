@@ -15,12 +15,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
  
-    const resend      = getResend()
-    const appUrl      = process.env.NEXT_PUBLIC_APP_URL || 'https://zunobio.com'
-    const profileUrl  = `${appUrl}/${username}`
- 
+const resend          = getResend()
+    const appUrl          = (process.env.NEXT_PUBLIC_APP_URL || 'https://zunobio.com').replace(/\/$/, '').replace(/^http:/, 'https:')
+    const profileUrl      = `${appUrl}/${username}`
+    const previewImageUrl = `${appUrl}/zunobio-preview.jpg`
+
     const html = await render(
-      WelcomeEmail({ username, displayName: displayName || username, profileUrl })
+      WelcomeEmail({ username, displayName: displayName || username, profileUrl, previewImageUrl })
     )
  
     const { data, error } = await resend.emails.send({

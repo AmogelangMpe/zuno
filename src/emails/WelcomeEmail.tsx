@@ -16,12 +16,13 @@ import {
 } from '@react-email/components'
 
 type Props = {
-  username:    string
-  displayName: string
-  profileUrl:  string
+  username:        string
+  displayName:     string
+  profileUrl:      string
+  previewImageUrl: string
 }
 
-export default function WelcomeEmail({ username, displayName, profileUrl }: Props) {
+export default function WelcomeEmail({ username, displayName, profileUrl, previewImageUrl }: Props) {
   return (
     <Html lang="en">
       <Head>
@@ -76,7 +77,7 @@ export default function WelcomeEmail({ username, displayName, profileUrl }: Prop
           <Section style={previewImageSection}>
             <Text style={previewCaption}>✨ HERE&apos;S WHAT&apos;S POSSIBLE</Text>
             <Img
-              src={`${process.env.NEXT_PUBLIC_APP_URL || 'https://zunobio.com'}/zunobio-preview.jpg`}
+              src={previewImageUrl}
               alt="Example Zunobio profile page"
               width="464"
               style={previewImg}
@@ -188,9 +189,10 @@ export default function WelcomeEmail({ username, displayName, profileUrl }: Prop
 
 // ── Preview defaults ──────────────────────────────────────────────────────────
 WelcomeEmail.PreviewProps = {
-  username:    'mihlali',
-  displayName: 'Mihlali',
-  profileUrl:  'https://zunobio.com/mihlali',
+  username:        'mihlali',
+  displayName:     'Mihlali',
+  profileUrl:      'https://zunobio.com/mihlali',
+  previewImageUrl: 'https://zunobio.com/zunobio-preview.jpg',
 }
 
 // ── Styles ────────────────────────────────────────────────────────────────────
